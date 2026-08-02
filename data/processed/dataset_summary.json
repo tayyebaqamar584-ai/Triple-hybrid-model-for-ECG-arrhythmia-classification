@@ -1,0 +1,84 @@
+{
+  "total_beats": 109494,
+  "class_counts": {
+    "Normal(N)": 90631,
+    "SupraV(S)": 2781,
+    "Ventricular(V)": 7236,
+    "Fusion(F)": 803,
+    "Paced(Q)": 8043
+  },
+  "splits": {
+    "train": 44665,
+    "val": 12909,
+    "test": 51920
+  },
+  "records_used": {
+    "train": [
+      101,
+      104,
+      106,
+      107,
+      108,
+      109,
+      112,
+      114,
+      115,
+      118,
+      122,
+      201,
+      203,
+      207,
+      208,
+      209,
+      215,
+      223,
+      230
+    ],
+    "val": [
+      102,
+      116,
+      119,
+      124,
+      205,
+      220
+    ],
+    "test": [
+      100,
+      103,
+      105,
+      111,
+      113,
+      117,
+      121,
+      123,
+      200,
+      202,
+      210,
+      212,
+      213,
+      214,
+      217,
+      219,
+      221,
+      222,
+      228,
+      231,
+      232,
+      233,
+      234
+    ]
+  },
+  "paced_heavy_records_distribution": {
+    "train": [
+      104,
+      107
+    ],
+    "val": [
+      102
+    ],
+    "test": [
+      217
+    ]
+  },
+  "note": "Full 48-record MIT-BIH database. 5-class AAMI task (N/S/V/F/Q), all records retained per project decision. Paced-heavy records (102/104/107/217) deliberately distributed across all three splits so each split has real Paced(Q) examples."
+}

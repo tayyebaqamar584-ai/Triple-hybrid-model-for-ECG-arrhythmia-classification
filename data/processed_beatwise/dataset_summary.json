@@ -1,0 +1,37 @@
+{
+  "protocol": "beat-wise",
+  "total_beats": 109494,
+  "splits": {
+    "train": 82120,
+    "val": 16424,
+    "test": 10950
+  },
+  "split_pct": {
+    "train": 75.0,
+    "val": 15.0,
+    "test": 10.0
+  },
+  "class_counts_per_split": {
+    "train": {
+      "Normal(N)": 67972,
+      "SupraV(S)": 2086,
+      "Ventricular(V)": 5427,
+      "Fusion(F)": 602,
+      "Paced(Q)": 6033
+    },
+    "val": {
+      "Normal(N)": 13595,
+      "SupraV(S)": 417,
+      "Ventricular(V)": 1085,
+      "Fusion(F)": 121,
+      "Paced(Q)": 1206
+    },
+    "test": {
+      "Normal(N)": 9064,
+      "SupraV(S)": 278,
+      "Ventricular(V)": 724,
+      "Fusion(F)": 80,
+      "Paced(Q)": 804
+    }
+  }
+}
