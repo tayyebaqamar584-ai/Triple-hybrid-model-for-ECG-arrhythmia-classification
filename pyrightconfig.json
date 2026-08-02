@@ -1,0 +1,9 @@
+{
+    "venvPath": "D:/ECG_Project_Complete",
+    "venv": ".venv2",
+    "extraPaths": [
+        "D:/ECG_Project_Complete/src",
+        "D:/ECG_Project_Complete/.venv2/Lib/site-packages"
+    ],
+    "typeCheckingMode": "basic"
+}
