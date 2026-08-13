@@ -20,13 +20,10 @@ def resolve_python_executable():
     if env_override:
         candidates.append(env_override)
 
-    fallback_env = os.path.join(ROOT, '.venv2', 'Scripts', 'python.exe')
-    if os.path.exists(fallback_env):
-        candidates.append(fallback_env)
-
-    local_env = os.path.join(ROOT, '.venv', 'Scripts', 'python.exe')
-    if os.path.exists(local_env):
-        candidates.append(local_env)
+    for env_dir in ('.venv', '.venv2'):
+        local_env = os.path.join(ROOT, env_dir, 'bin', 'python')
+        if os.path.exists(local_env):
+            candidates.append(local_env)
 
     for name in ('python', 'python3'):
         resolved = shutil.which(name)
@@ -54,6 +51,7 @@ STEPS = [
     ('Train XGB (base)', [PYTHON, 'src/03b_train_one_model.py', 'beatwise', 'xgb']),
     ('Train ADA (base)', [PYTHON, 'src/03b_train_one_model.py', 'beatwise', 'ada']),
     ('Ensemble v2', [PYTHON, 'src/04c_ensemble_v2.py', 'beatwise']),
+    ('RFO optimization', [PYTHON, 'src/07_red_fox_optimization.py']),
     ('Visualize', [PYTHON, 'src/05b_visualize.py', 'beatwise']),
     ('Generate reports', [PYTHON, 'src/06b_generate_reports.py', 'beatwise']),
 ]
@@ -150,18 +148,14 @@ def write_features_description():
 
 def main():
     set_env_threads()
-    # Do not force re-run long training if user wants to monitor separately; run steps sequentially
+    # Stop immediately so a partial run cannot be mistaken for a completed experiment.
     for name, cmd in STEPS:
-        try:
-            run_step(name, cmd)
-        except Exception as e:
-            print(f"Step failed: {e}")
-            break
+        run_step(name, cmd)
 
     # Copy filtered/normalized/smote outputs into processed_beatwise for easy access
     copy_filtered_and_normalized()
     write_features_description()
-    print('\nPipeline finished (or stopped on error). Outputs under data/processed_beatwise and results_beatwise')
+    print('\nPipeline finished successfully. Outputs under data/processed_beatwise and results_beatwise')
 
 
 if __name__ == '__main__':

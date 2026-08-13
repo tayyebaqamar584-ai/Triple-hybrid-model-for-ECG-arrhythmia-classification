@@ -1,7 +1,4 @@
-# Auxly - AI Task Management (internal data)
-.auxly/
-
-# Python environment and caches
+# Python environments and caches
 __pycache__/
 *.py[cod]
 *.pyo
@@ -14,14 +11,98 @@ __pycache__/
 venv/
 env/
 ENV/
+*.egg-info/
+build/
+dist/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Local tooling and secrets
+.auxly/
 .env
 .env.*
 *.local
+*.secret
+credentials*
+secrets/
+*.pem
+*.key
+*.crt
 
-# IDE and editor state
-.vscode/
+# IDE and editor state (allow portable project recommendations)
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
 .cursor/
+.idea/
 
 # OS files
 .DS_Store
 Thumbs.db
+desktop.ini
+
+# Downloaded and generated research data
+data/raw/
+data/processed/
+data/processed_beatwise/
+data/splits/
+data/splits_beatwise/
+raw_data/
+examples/data/generated/
+
+# Models, predictions, and generated results
+*.h5
+*.keras
+*.ckpt
+*.pt
+*.pth
+*.onnx
+*.pkl
+*.joblib
+*.safetensors
+*.npy
+*.npz
+checkpoints/
+models/
+results/
+results_*/
+outputs/
+runs/
+logs/
+*.csv
+*.xlsx
+*.pdf
+
+# Archives and historical experiments
+archive/
+archives/
+backup/
+backups/
+old/
+old_versions/
+legacy/
+!src/archive/
+!src/archive/*.py
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+# PowerLab and private validation material
+*PowerLab*
+*powerlab*
+*ADInstruments*
+*adinstruments*
+*LabChart*
+*labchart*
+validation_data/
+private_data/
+recordings/
+
+# Temporary files
+*.swp
+*.swo
+*~
