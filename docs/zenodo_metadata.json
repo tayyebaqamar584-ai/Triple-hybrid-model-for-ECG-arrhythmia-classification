@@ -1,0 +1,12 @@
+{
+  "title": "Processed ECG data and model artifacts for Triple-hybrid-model-for-ECG-arrhythmia-classification",
+  "creators": [
+    {
+      "name": "",
+      "affiliation": ""
+    }
+  ],
+  "description": "Processed datasets, scaler parameters, and trained model checkpoints used for reproducing experiments in the associated paper. Raw patient data must be obtained separately (PhysioNet).",
+  "keywords": ["ECG", "arrhythmia", "machine learning", "reproducibility"],
+  "license": "MIT"
+}
