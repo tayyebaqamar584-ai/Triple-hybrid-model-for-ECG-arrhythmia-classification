@@ -5,6 +5,11 @@ Reuses the already-extracted real per-beat feature table (data/raw/ecg_all_raw.c
 109,494 real beats from all 48 MIT-BIH records, computed by 01_extract_features.py) and
 derives a single beat-wise 75:15:10 train:val:test split. Split stratification is by
 class so every split retains representative proportions of the five rhythm labels.
+
+This is an intra-patient protocol: beats from one record can occur in multiple
+splits. It must not be described as patient-independent evaluation. The official
+pipeline currently uses this protocol; the record-level outputs from
+01_extract_features.py are a separate experimental protocol.
 """
 
 import os, json
