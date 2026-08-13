@@ -102,7 +102,6 @@ def wavelet_features(beat_signal):
         'DWT_Total_Energy': total,
     }
 
-
 def freq_band_energy(beat_signal, fs=FS):
     """LF (0.04-0.15Hz proxy via beat-scale) / HF energy ratio using Welch PSD
     on a windowed beat segment. For single-beat morphology we approximate using

@@ -68,7 +68,7 @@ def vec_to_params(x):
 
 
 
-_fitness_cache = {}
+_fitness_cache: dict[tuple[float, ...], float] = {}
 
 
 def fitness(x):
@@ -99,7 +99,7 @@ population = np.array([BOUNDS_LOW + rng.random(D) * (BOUNDS_HIGH - BOUNDS_LOW) f
 population = np.array([clip_and_round(p) for p in population])
 fit = np.array([fitness(p) for p in population])
 
-best_idx = np.argmax(fit)
+best_idx: int = int(np.argmax(fit))
 global_best = population[best_idx].copy()
 global_best_fit = fit[best_idx]
 
