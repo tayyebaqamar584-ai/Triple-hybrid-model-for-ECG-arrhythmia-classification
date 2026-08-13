@@ -1,5 +1,7 @@
 {
     "include": ["src", "tests", "scripts"],
     "extraPaths": ["src"],
-    "typeCheckingMode": "basic"
+    "typeCheckingMode": "basic",
+    "reportMissingTypeStubs": false,
+    "exclude": ["src/archive", "data", "raw_data", "results_beatwise"]
 }
