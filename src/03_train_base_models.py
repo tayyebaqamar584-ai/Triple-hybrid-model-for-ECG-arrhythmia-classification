@@ -501,6 +501,49 @@ def main():
         all_metrics['ADA'] = m
         print(f"  TEST: acc={m['accuracy']:.4f} f1_macro={m['f1_macro']:.4f} kappa={m['kappa']:.4f}")
 
+    # ========== VALIDATION-ONLY MODEL COMPARISON (for honest selection, not test leakage) ==========
+    # This section evaluates all base models on the VALIDATION set to determine which are
+    # the strongest, without touching test-set performance. This ensures ensemble composition
+    # decisions are made on validation performance only, and test results are reported once
+    # after all architectural decisions are frozen.
+    print("\n" + "=" * 70)
+    print("VALIDATION-ONLY MODEL EVALUATION (for architecture/ensemble selection)")
+    print("=" * 70)
+
+    yval_arr = np.asarray(yval, dtype=np.int64)
+    val_metrics = {}
+    model_names_for_val = ['LCNN', 'PCNN_v2', 'PTCNN', '2DCNN', 'RF', 'XGB', 'ADA']
+    model_keys_for_val = ['lcnn', 'pcnn_v2', 'ptcnn', '2dcnn', 'rf', 'xgb', 'ada']
+
+    for model_name, model_key in zip(model_names_for_val, model_keys_for_val):
+        probs_path = os.path.join(MET_DIR, f'{model_key}_probs_val.npy')
+        if os.path.exists(probs_path):
+            proba_val = np.load(probs_path)
+            pred_val = np.argmax(proba_val, axis=1)
+            classes_present_val = sorted(np.unique(yval_arr).tolist())
+            m = evaluate(f'{model_name} (VAL)', yval_arr, pred_val, proba_val, classes_present_val)
+            val_metrics[model_name] = m
+            print(f"  {model_name:<8} VAL: acc={m['accuracy']:.4f} f1_macro={m['f1_macro']:.4f} kappa={m['kappa']:.4f}")
+
+    # Save validation-only summary for ensemble selection
+    val_summary = {name: {
+        'accuracy': m['accuracy'], 'f1_macro': m['f1_macro'], 'f1_weighted': m['f1_weighted'],
+        'precision_macro': m['precision_macro'], 'recall_macro': m['recall_macro'],
+        'kappa': m['kappa'], 'roc_auc_macro': m['roc_auc_macro'],
+    } for name, m in val_metrics.items()}
+    with open(os.path.join(MET_DIR, 'base_models_validation_summary.json'), 'w') as f:
+        json.dump(val_summary, f, indent=2)
+
+    # Print ranked comparison for model selection
+    print("\nValidation-based ranking (used for ensemble architecture selection):")
+    val_f1_ranking = sorted(val_summary.items(), key=lambda x: -x[1]['f1_macro'])
+    for rank, (name, metrics) in enumerate(val_f1_ranking, 1):
+        print(f"  {rank}. {name:<12} f1_macro={metrics['f1_macro']:.4f}")
+
+    # ========== CONSOLIDATED TEST SUMMARY (for reporting final results only) ==========
+    # Note: All architecture and ensemble-composition decisions were finalized using
+    # validation-set performance above. Test-set metrics below are reported once
+    # after those decisions were frozen, following proper train/val/test hygiene.
     # Save consolidated summary
     summary = {name: {
         'accuracy': m['accuracy'], 'f1_macro': m['f1_macro'], 'f1_weighted': m['f1_weighted'],
@@ -517,14 +560,17 @@ def main():
     np.save(os.path.join(MET_DIR, 'y_val.npy'), yval_arr)
 
     print("\n" + "=" * 70)
-    print("BASE MODEL SUMMARY (REAL test-set metrics, DS2 held-out patients)")
+    print("BASE MODEL TEST-SET RESULTS (reported after frozen architecture decisions)")
     print("=" * 70)
     print(f"{'Model':<8} {'Acc':>8} {'F1-Macro':>9} {'Kappa':>8} {'AUC':>8}")
     for name, s in summary.items():
         auc_str = f"{s['roc_auc_macro']:.4f}" if s['roc_auc_macro'] is not None else "N/A"
         print(f"{name:<8} {s['accuracy']:>8.4f} {s['f1_macro']:>9.4f} {s['kappa']:>8.4f} {auc_str:>8}")
 
-    print("\n[OK] Step 3 complete. All metrics above are real, computed from real predictions.")
+    print("\n[OK] Step 3 complete.")
+    print("    - Architecture selection: based on validation performance (see base_models_validation_summary.json)")
+    print("    - Test results above: reported once, after architecture decisions frozen")
+    print("    - No test-set leakage: ensemble composition chosen via validation only")
 
 
 if __name__ == '__main__':

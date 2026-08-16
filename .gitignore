@@ -63,6 +63,7 @@ examples/data/generated/
 *.safetensors
 *.npy
 *.npz
+*.log
 checkpoints/
 models/
 results/
@@ -106,3 +107,4 @@ recordings/
 *.swp
 *.swo
 *~
+.cursorrules

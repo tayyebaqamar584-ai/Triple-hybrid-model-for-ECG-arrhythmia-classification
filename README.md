@@ -47,6 +47,22 @@ The full pipeline extracts features, rebuilds the active beat-wise splits, appli
 training-only SMOTE, trains base models, builds the ensemble, runs RFO, and writes
 generated outputs under `data/` and `results_beatwise/`.
 
+## Architecture Overview
+
+The pipeline combines classical machine learning and deep learning approaches:
+
+- **Feature Extraction**: 20 hand-engineered features from raw ECG signals (timing,
+  morphology, frequency-domain, and variability)
+- **Base Models**: 
+  - Deep Learning: LCNN, PCNN_v2, PTCNN (1D-CNN variants), 2DCNN
+  - Classical ML: Random Forest, XGBoost, AdaBoost
+- **Ensemble**: Probability-averaged double hybrids from top-3 base models
+- **Meta-Learner**: Tuned XGBoost trained on concatenated double-hybrid probabilities
+- **Hyperparameter Optimization**: Red Fox Optimization for meta-learner hyperparameter search
+
+See [docs/rfo.md](docs/rfo.md) for detailed methodology and [docs/reproducibility.md](docs/reproducibility.md)
+for data hygiene and split protocol.
+
 ## Repository layout
 
 - `src/`: preprocessing, training, ensemble, optimization, visualization, and reports
@@ -66,6 +82,24 @@ pytest -q tests
 MIT-BIH data have separate terms and citation requirements from this software. Do not
 redistribute downloaded records without verifying the current PhysioNet conditions.
 The software license is documented separately in [LICENSE](LICENSE).
+
+## Cite this work
+
+**Once the paper is published, update this section with the official citation:**
+
+```bibtex
+@article{XXX,
+  title={Triple-Hybrid Model for ECG Arrhythmia Classification},
+  author={...},
+  journal={...},
+  year={2024},
+  doi={...}
+}
+```
+
+**Processed dataset and code artifacts:**
+- Code repository: [This repository]  
+- Processed data on Zenodo: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXX.svg)](https://doi.org/10.5281/zenodo.XXXXXX) *(to be assigned after public release)*
 
 ## Limitations
 
